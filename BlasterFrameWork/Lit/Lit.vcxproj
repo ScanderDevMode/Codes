@@ -144,8 +144,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Src\Lit.cpp" />
+    <ClCompile Include="Src\Pixel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\Common.h" />
     <ClInclude Include="Header\Lit.h" />
     <ClInclude Include="Header\Pixel.h" />
   </ItemGroup>

@@ -8,7 +8,8 @@
 #define	EXPORT _declspec(dllimport)
 #endif
 
-#include 
+//includes
+#include "Pixel.h"
 
 
 
@@ -30,7 +31,7 @@ namespace BF {
 			char* fileName;				//full file name of the file loaded
 			ImageType imageType;		//the type of the image loaded
 
-			
+			Pixel pixels;				//Pixel object to store the pixels of the image
 		}ImageInstance;
 
 
@@ -75,12 +76,13 @@ namespace BF {
 			/*
 			* Loads an image from the given file data and returns an Image Manipulation object of the respective type.
 			* Params :
-			*	fileName - The full path of the image file to be loaded
+			*	fileData - the byte data of the image file to be loaded
+			*	dataSizeInBytes - total size of the byte data
 			* Returns :
 			*	a ptr to an imageInstance of the loaded image file, if ok /
 			*	NULL ptr, if fails
 			*/
-			ImageInstance* loadImageInstance(char *fileData, int &instanceId);
+			ImageInstance* loadImageInstance(char *fileData, int dataSizeInBytes, int &instanceId);
 
 		};
 

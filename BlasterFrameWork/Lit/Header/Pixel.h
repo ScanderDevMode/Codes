@@ -16,6 +16,29 @@ namespace BF {
 			char G;
 			char B;
 			char A;
+
+
+			//overloaded operators
+
+			//overloaded = operator
+			//&
+			_RGBA& operator= (const _RGBA& obj) {
+				this->A = obj.A;
+				this->R = obj.R;
+				this->G = obj.G;
+				this->B = obj.B;
+
+				return *this;
+			}
+			
+			//overloaded = operator
+			//*
+			PRGBA operator= (const PRGBA obj) {
+				this->A = obj->A;
+				this->R = obj->R;
+				this->G = obj->G;
+				this->B = obj->B;
+			}
 		}RGBA, *PRGBA;
 
 
@@ -23,7 +46,7 @@ namespace BF {
 		//Pixel class contains the pixel data and some apis to manipulate the pixel
 		class Pixel {
 		private :
-			PRGBA		pixels;		//pixel array
+			PRGBA		pixels;			//2d pixel array
 			int			width;			//image width or pixel coloumns
 			int			height;			//image height or pixel rows
 			int			pixelCount;		//the total count of pixels in the pixels array
@@ -31,6 +54,7 @@ namespace BF {
 		public:
 			//constructor
 			Pixel(int width, int height);
+			Pixel();
 
 			//destructor
 			~Pixel();
@@ -50,18 +74,35 @@ namespace BF {
 			/*
 			* This function is used to get a pixel at a specific postion
 			* Params :
-			*	row - the pixel's position in height.
-			*	col - the pixel's position in  width.
+			*	row - the pixel's position in height. starts with 1 and ends on height
+			*	col - the pixel's position in  width. starts with 1 and ends on width
+			* Returns :
+			*	returns the RGBA Pixel at the enquired position if ok,
+			*	returns NULL if fails
 			*/
-			PRGBA getPixelAt(int row, int col);
+			const PRGBA getPixelAt(int row, int col);
 
 
 			/*
 			* This function is used to get the pixel array.
 			* Params :
 			*	count - refernece to an int variable to recieve the total pixel count in array.
+			* Returns :
+			*	returns the RGBA pixels array if ok,
+			*	returns NULL if fails
 			*/
-			PRGBA getPixel(int &count);
+			const PRGBA getPixels(int &count);
+
+
+			/*
+			* This function is used to get a pixel at a specific index of the array.
+			* Params :
+			*	index - the index of the element in the array to be retrieved. between 0 to pixelCount - 1
+			* Returns :
+			*	returns the RGBA Pixel at the enquired position if ok,
+			*	returns NULL if fails
+			*/
+			const PRGBA getPixelAtIndex(int index);
 
 
 			/*
@@ -70,6 +111,20 @@ namespace BF {
 			*	returns the total count of the pixel array.
 			*/
 			int getTotalPixelCount();
+
+
+			/*
+			* Function to set a pixel at the position of row and col with the color 'color'
+			* Params :
+			*	color - the color to set at the pixel
+			*	row - the row at which the pixel resides, starts with 1 and ends on height
+			*	col - the col at which the pixel resides, starts with 1 and ends on width
+			* returns :
+			*	returns the pointer to the pixel, if ok.
+			*	returns NULL if fails.
+			*/
+			const PRGBA setPixelAtIndex(RGBA color, int row, int col);
+
 		};
 	}
 }
