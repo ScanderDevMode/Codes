@@ -7,14 +7,16 @@ namespace BF {
 	namespace Lit {
 	
 		//constructor
-		Pixel::Pixel(int width, int height) :
-			width(width),
-			height(height),
+		Pixel::Pixel(unsigned int width, unsigned int height) :
 			pixelCount(width * height),
 			pixels(NULL)
 		{
 			//initiate the memory
-			this->pixels = (PRGBA)calloc(this->pixelCount, sizeof(RGBA));
+			if (width && height) {
+				this->width = width;
+				this->height = height;
+				this->pixels = (PRGBA)calloc(this->pixelCount, sizeof(RGBA));
+			}
 		}
 
 		Pixel::Pixel() : 
@@ -81,6 +83,46 @@ namespace BF {
 			*pixel = color;
 
 			return PRGBA();
+		}
+
+		const PRGBA Pixel::setPixelsWidthAndHeight(int width, int height)
+		{
+			if (width == 0) {
+				width = this->width;
+			}
+
+			if (height == 0) {
+				height = this->height;
+			}
+
+			if (pixelCount &&
+				this->width &&
+				this->height &&
+				pixels
+			) {
+				
+				//we already have an existing pixel array, reallocate that
+				int temp_pixelCount = width * height;
+
+				//create the new pixels array
+				pixels = (PRGBA)realloc(pixels, temp_pixelCount * sizeof(RGBA));
+
+				memset(pixels + pixelCount, 0, (temp_pixelCount - pixelCount) * sizeof(RGBA)); // set the newly added memory to zero
+
+				//update the local variables
+				this->width = width;
+				this->height = height;
+				pixelCount = temp_pixelCount;
+			}
+			else {
+				//no previously create pixel array, so create one
+				this->width = width;
+				this->height = height;
+				pixelCount = width * height;
+				pixels = (PRGBA)calloc(pixelCount, sizeof(RGBA));
+			}
+
+			return pixels;
 		}
 	
 

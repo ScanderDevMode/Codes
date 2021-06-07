@@ -17,11 +17,15 @@ namespace BF {
 	namespace Lit {
 		//This header contains the class which is exported and contains all the main apis to interact with the Lit api.
 		
-
 		//ImageTypes supported currently
 		typedef enum _ImageType {
-			BITMAP = 0
+			Unknown = 0,
+			BITMAP = 1,
+			NUM_OF_TYPES
 		}ImageType;
+
+
+		
 
 
 
@@ -30,8 +34,26 @@ namespace BF {
 			int instanceId;				//id of this instance
 			char* fileName;				//full file name of the file loaded
 			ImageType imageType;		//the type of the image loaded
+			void* fileData;				//file buffer
+			Pixel* pixels;				//Pixel pointer to store the pixels of the image, gets created when called from a constructor
 
-			Pixel pixels;				//Pixel object to store the pixels of the image
+			//constructors
+
+			/*
+			* This constructor helps in getting an ImageInstance create by scratch.
+			* Params :
+			*	fileName - the name of the image file
+			*	instanceId - the instance Id you want to set for this Instance, by default it is 0
+			*	imgType - the type of the image, by default it is set to BITMAP
+			*	widthInPixels - the width of the pixel array to be created, by default set to 0
+			*	heightInPixels - the height of the pixel array to be created, by default set to 0
+			*	[NOTE *** If any one of the width and height of the pixels is passed as 0, then no pixel array will be created, you can create it later]
+			*/
+			_ImageInstance(char* fileName, int instanceId = 0, ImageType imgType = ImageType::BITMAP, unsigned int widthInPixels = 0, unsigned int heightInPixels = 0);
+			
+			_ImageInstance();
+			
+			~_ImageInstance();
 		}ImageInstance;
 
 
@@ -42,6 +64,7 @@ namespace BF {
 		class EXPORT Lit {
 		private:
 			ImageInstance	*images;
+			
 			int imageCount;
 
 
@@ -66,23 +89,29 @@ namespace BF {
 			* Loads an image from the given file name and returns an Image Manipulation object of the respective type.
 			* Params : 
 			*	fileName - The full path of the image file to be loaded
+			*	instanceId - a ref variable to recieve the instance Id of the loaded image
+			*	errorId - recieves the error id if any error occurs
 			* Returns :
 			*	a ptr to an imageInstance of the loaded image file, if ok /
 			*	NULL ptr, if fails
 			*/
-			ImageInstance* loadImageInstance(char *fileName, int &instanceId);
+			ImageInstance* loadImageInstance(const char *fileName, int &instanceId, int &errorID);
 
 
 			/*
 			* Loads an image from the given file data and returns an Image Manipulation object of the respective type.
 			* Params :
+			*	fileName - Any fileName for referrence, by default is "img_file"
 			*	fileData - the byte data of the image file to be loaded
+			*	imgType - the type of the image data you are sending, by default this is set to BITMAP
 			*	dataSizeInBytes - total size of the byte data
+			*	instanceId - a ref variable to recieve the instance Id of the loaded image
+			*	errorId - recieves the error id if any error occurs
 			* Returns :
 			*	a ptr to an imageInstance of the loaded image file, if ok /
 			*	NULL ptr, if fails
 			*/
-			ImageInstance* loadImageInstance(char *fileData, int dataSizeInBytes, int &instanceId);
+			ImageInstance* loadImageInstance(const char* fileName, char *fileData, ImageType imgType, int dataSizeInBytes, int &instanceId, int &errorID);
 
 		};
 

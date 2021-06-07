@@ -53,7 +53,22 @@ namespace BF {
 
 		public:
 			//constructor
-			Pixel(int width, int height);
+			
+			/*
+			* A contructor to create the pixels class, with the pixel array being created depending on the params
+			* Params :
+			*	width - the width of the pixel array
+			*	height - the height of the pixel array
+			* [NOTE ** Passing any one of the width or height as 0, will result the pixel array not being created, later you can use setPixelWidthAndHeight]
+			*/
+			Pixel(unsigned int width, unsigned int height);
+
+			
+			/*
+			* Not recommended,
+			* Create the pixels with the parameterized constructor, with width and height passed
+			* Else you have to create the pixels with setPixelWidthAndHeight
+			*/
 			Pixel();
 
 			//destructor
@@ -119,12 +134,24 @@ namespace BF {
 			*	color - the color to set at the pixel
 			*	row - the row at which the pixel resides, starts with 1 and ends on height
 			*	col - the col at which the pixel resides, starts with 1 and ends on width
-			* returns :
+			* Returns :
 			*	returns the pointer to the pixel, if ok.
 			*	returns NULL if fails.
 			*/
 			const PRGBA setPixelAtIndex(RGBA color, int row, int col);
 
+
+
+			/*
+			* Function to set the total width and height of the pixels, this function also adjusts the pixels array to be of the new size
+			* Params : 
+			*	width - the width to set for the pixels, passing 0 to this will cause the current width to be used
+			*	height - the height to set for the pixels, passing 0 to this will cause the current height to be used
+			* Returns :
+			*	returns null if failed
+			*	returns the pointer to the first element of the pixel array
+			*/
+			const PRGBA setPixelsWidthAndHeight(int width, int height);
 		};
 	}
 }
